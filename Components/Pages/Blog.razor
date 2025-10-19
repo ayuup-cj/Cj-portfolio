@@ -1,0 +1,186 @@
+@page "/blog"
+
+<div class="blog-page">
+    <div class="container">
+        <div class="page-header">
+            <h1>My Blog</h1>
+            <p class="page-subtitle">Thoughts, tutorials, and insights about web development and design</p>
+        </div>
+
+      
+
+        <div class="blog-posts">
+            @if (filteredPosts.Count == 0)
+            {
+                <div class="no-posts">
+                    <h3>No posts found</h3>
+                    <p>There are no blog posts in this category yet.</p>
+                </div>
+            }
+            else
+            {
+                @foreach (var post in filteredPosts)
+                {
+                    <div class="blog-post">
+                        <div class="post-image">
+                            <div class="image-placeholder">
+                                <span>@post.Category</span>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span class="post-date">@post.Date.ToString("MMMM dd, yyyy")</span>
+                                <span class="post-category">@post.Category</span>
+                            </div>
+                            
+                            <h2 class="post-title">@post.Title</h2>
+                            <p class="post-excerpt">@post.Summary</p>
+                            <div class="post-footer">
+                            
+                                <div class="read-time">@post.ReadTime min read</div>
+                                <a href="/blog/@post.Slug" class="read-more">Read More →</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        @if (filteredPosts.Count > 0)
+        {
+            <div class="load-more">
+                <button class="load-more-btn" @onclick="LoadMorePosts">Load More Posts</button>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private List<BlogPost> allPosts = new List<BlogPost>();
+    private List<BlogPost> filteredPosts = new List<BlogPost>();
+    private string currentFilter = "all";
+    private int visiblePosts = 3;
+
+    protected override void OnInitialized()
+    {
+        LoadSamplePosts();
+        FilterPosts("all");
+    }
+
+    private void LoadSamplePosts()
+    {
+        allPosts = new List<BlogPost>
+        {
+            new BlogPost
+            {
+                Id = 1,
+                Slug = "getting-started-with-blazor",
+                Title = "Getting Started with Blazor",
+                Summary = "Learn the basics of building modern web applications with Blazor and .NET. This comprehensive guide covers everything from setup to deployment.",
+                Content = "Full article content would go here...",
+                Date = DateTime.Now.AddDays(-5),
+                Category = "development",
+                ReadTime = 8,
+                Tags = new List<string> { "Blazor", ".NET", "Web Development" }
+            },
+            new BlogPost
+            {
+                Id = 2,
+                Slug = "modern-web-design-trends-2024",
+                Title = "Modern Web Design Trends 2024",
+                Summary = "Exploring the latest trends in web design and user experience. Discover what makes modern websites stand out and engage users effectively.",
+                Content = "Full article content would go here...",
+                Date = DateTime.Now.AddDays(-12),
+                Category = "design",
+                ReadTime = 6,
+                Tags = new List<string> { "Design", "UI/UX", "Trends" }
+            },
+            new BlogPost
+            {
+                Id = 3,
+                Slug = "building-responsive-layouts",
+                Title = "Building Responsive Layouts with CSS Grid",
+                Summary = "Master the art of creating websites that work perfectly on all devices. Learn about CSS Grid, Flexbox, and responsive design principles.",
+                Content = "Full article content would go here...",
+                Date = DateTime.Now.AddDays(-18),
+                Category = "development",
+                ReadTime = 10,
+                Tags = new List<string> { "CSS", "Responsive Design", "Frontend" }
+            },
+            new BlogPost
+            {
+                Id = 4,
+                Slug = "introduction-to-csharp",
+                Title = "Introduction to C# for Web Developers",
+                Summary = "A beginner-friendly guide to C# programming language. Perfect for developers coming from other languages who want to explore .NET ecosystem.",
+                Content = "Full article content would go here...",
+                Date = DateTime.Now.AddDays(-25),
+                Category = "tutorial",
+                ReadTime = 12,
+                Tags = new List<string> { "C#", ".NET", "Programming" }
+            },
+            new BlogPost
+            {
+                Id = 5,
+                Slug = "color-theory-for-developers",
+                Title = "Color Theory for Developers",
+                Summary = "Understanding color theory and how to apply it in your web projects. Create visually appealing interfaces with proper color combinations.",
+                Content = "Full article content would go here...",
+                Date = DateTime.Now.AddDays(-32),
+                Category = "design",
+                ReadTime = 7,
+                Tags = new List<string> { "Design", "Color Theory", "UI" }
+            },
+            new BlogPost
+            {
+                Id = 6,
+                Slug = "optimizing-blazor-performance",
+                Title = "Optimizing Blazor Application Performance",
+                Summary = "Learn advanced techniques to optimize your Blazor applications for better performance and faster load times.",
+                Content = "Full article content would go here...",
+                Date = DateTime.Now.AddDays(-40),
+                Category = "development",
+                ReadTime = 9,
+                Tags = new List<string> { "Blazor", "Performance", "Optimization" }
+            }
+        };
+    }
+
+    private void FilterPosts(string category)
+    {
+        currentFilter = category;
+        
+        if (category == "all")
+        {
+            filteredPosts = allPosts.Take(visiblePosts).ToList();
+        }
+        else
+        {
+            filteredPosts = allPosts
+                .Where(p => p.Category == category)
+                .Take(visiblePosts)
+                .ToList();
+        }
+        
+        StateHasChanged();
+    }
+
+    private void LoadMorePosts()
+    {
+        visiblePosts += 3;
+        FilterPosts(currentFilter);
+    }
+
+    public class BlogPost
+    {
+        public int Id { get; set; }
+        public string Slug { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string Summary { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
+        public DateTime Date { get; set; }
+        public string Category { get; set; } = string.Empty;
+        public int ReadTime { get; set; }
+        public List<string> Tags { get; set; } = new List<string>();
+    }
+}

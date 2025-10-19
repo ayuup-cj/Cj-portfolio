@@ -1,0 +1,47 @@
+﻿@page "/"
+@inject NavigationManager Navigation
+
+<div class="hero-section">
+    <div class="container">
+        <div class="hero-content">
+         <div class="photo-section">
+        <img src="IMG-20250529-WA0011.jpg" alt="Ayuub CJ" />
+        
+    </div>
+            <h1>Hi, i'm, Ayuup-Cj</h1>
+            <p class="hero-subtitle">
+                A Creative Front-end Developer and Digital Designer.<br>
+                Turning ideas into stunning visuals.
+            </p>
+            <button class="cta-button" @onclick="NavigateToAbout">More About Me</button>
+        </div>
+    </div>
+</div>
+
+<section class="content-section">
+    <div class="container">
+        <div class="content-container">
+            <h2 class="content-title">MY-portfolio</h2>
+            <p class="content-subtitle">Ayuub CJ - Creative Developer</p>
+            <div class="content-body">
+                <p>
+                    I'm proud to create digital experiences that blend creativity with technology. 
+                    More than just a fusion of design and development, it's a celebration of the 
+                    transformative power of dreams and innovation.
+                </p>
+                <p>
+                    This creative journey channels the spirit of modern web development, where 
+                    the world is driven by dreams of progress and digital excellence. Every project 
+                    is an opportunity to push boundaries and create something extraordinary.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    private void NavigateToAbout()
+    {
+        Navigation.NavigateTo("/about");
+    }
+}

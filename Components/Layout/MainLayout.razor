@@ -1,0 +1,121 @@
+﻿@inherits LayoutComponentBase
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/site.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Modern Header Navigation -->
+    <header class="modern-header">
+        <div class="container">
+            <div class="nav-container">
+                <!-- Left Logo/Brand -->
+                <div class="nav-brand">
+                    <a href="/" class="brand-link">
+                        <span class="brand-text">CJ-Creative</span>
+                    </a>
+                </div>
+
+                <!-- Right Navigation Links -->
+                <nav class="main-nav">
+                    <a href="/" class="nav-item">Home</a>
+                    <a href="/about" class="nav-item">About</a>
+                    <a href="/blog" class="nav-item">Blog</a>
+                    <a href="/contact" class="nav-item">Contact</a>
+                </nav>
+
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" @onclick="ToggleMobileMenu">
+                    <span class="toggle-bar"></span>
+                    <span class="toggle-bar"></span>
+                    <span class="toggle-bar"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav @(showMobileMenu ? "active" : "")">
+        <div class="mobile-nav-content">
+            <a href="/" class="mobile-nav-item" @onclick="CloseMobileMenu">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="/about" class="mobile-nav-item" @onclick="CloseMobileMenu">
+                <i class="fas fa-user"></i>
+                <span>About</span>
+            </a>
+            <a href="/blog" class="mobile-nav-item" @onclick="CloseMobileMenu">
+                <i class="fas fa-blog"></i>
+                <span>Blog</span>
+            </a>
+            <a href="/contact" class="mobile-nav-item" @onclick="CloseMobileMenu">
+                <i class="fas fa-envelope"></i>
+                <span>Contact</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        @Body
+    </main>
+
+    <!-- Footer -->
+    <footer class="modern-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>CJ-Creative</h3>
+                    <p>Turning ideas into stunning visuals</p>
+                </div>
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h4>Navigation</h4>
+                        <a href="/">Home</a>
+                        <a href="/about">About</a>
+                        <a href="/blog">Blog</a>
+                        <a href="/contact">Contact</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Connect</h4>
+                        <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+                        <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+                        <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+                        <a href="mailto:its.yazzy@gmail.com"><i class="fas fa-envelope"></i> Email</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Contact Info</h4>
+                        <p><i class="fas fa-envelope"></i> its.CJ@gmail.com</p>
+                        <p><i class="fas fa-phone"></i> +252 676919012</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 CJ-Creative . All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+
+@code {
+    private bool showMobileMenu = false;
+
+    private void ToggleMobileMenu()
+    {
+        showMobileMenu = !showMobileMenu;
+    }
+
+    private void CloseMobileMenu()
+    {
+        showMobileMenu = false;
+    }
+}

@@ -1,0 +1,156 @@
+@page "/contact"
+@using System.ComponentModel.DataAnnotations
+
+<div class="contact-page">
+    <div class="container">
+        <h1>Get In Touch</h1>
+        <p class="page-subtitle">I'd love to hear from you. Send me a message and I'll respond as soon as possible.</p>
+        
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h3>Contact Information</h3>
+                <div class="contact-item">
+                    <div class="contact-icon">📧</div>
+                    <div>
+                        <strong>Email</strong>
+                        <p>anza@Cj.com</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">📱</div>
+                    <div>
+                        <strong>Phone</strong>
+                        <p>+252 90 6938958</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                        <strong>Location</strong>
+                        <p>Galkio, punt, somalia</p>
+                    </div>
+                </div>
+                
+                <div class="social-links">
+                    <h4>Follow Me</h4>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">
+                            <span>GitHub</span>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <span>LinkedIn</span>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <span>Twitter</span>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <span>Dribbble</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact-form">
+                <h3>Send Message</h3>
+                
+                @if (showSuccessMessage)
+                {
+                    <div class="success-message">
+                        <strong>Thank you!</strong> Your message has been sent successfully.
+                    </div>
+                }
+                
+                <EditForm Model="contactModel" OnValidSubmit="HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <InputText id="name" @bind-Value="contactModel.Name" class="form-control" placeholder="Enter your full name" />
+                        <ValidationMessage For="@(() => contactModel.Name)" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <InputText id="email" @bind-Value="contactModel.Email" class="form-control" placeholder="Enter your email address" />
+                        <ValidationMessage For="@(() => contactModel.Email)" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <InputText id="subject" @bind-Value="contactModel.Subject" class="form-control" placeholder="Enter message subject" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <InputTextArea id="message" @bind-Value="contactModel.Message" class="form-control" rows="6" placeholder="Enter your message..." />
+                        <ValidationMessage For="@(() => contactModel.Message)" />
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" disabled="@isSubmitting">
+                        @if (isSubmitting)
+                        {
+                            <span>Sending...</span>
+                        }
+                        else
+                        {
+                            <span>Send Message</span>
+                        }
+                    </button>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private ContactModel contactModel = new ContactModel();
+    private bool isSubmitting = false;
+    private bool showSuccessMessage = false;
+
+    private async void HandleValidSubmit()
+    {
+        isSubmitting = true;
+        StateHasChanged();
+
+        // Simulate API call delay
+        await Task.Delay(1000);
+
+        // Here you would typically send the data to your backend
+        Console.WriteLine($"Contact Form Submitted:");
+        Console.WriteLine($"Name: {contactModel.Name}");
+        Console.WriteLine($"Email: {contactModel.Email}");
+        Console.WriteLine($"Subject: {contactModel.Subject}");
+        Console.WriteLine($"Message: {contactModel.Message}");
+
+        // Reset form
+        contactModel = new ContactModel();
+        isSubmitting = false;
+        showSuccessMessage = true;
+        StateHasChanged();
+
+        // Hide success message after 5 seconds
+        await Task.Delay(5000);
+        showSuccessMessage = false;
+        StateHasChanged();
+    }
+
+    public class ContactModel
+    {
+        [Required(ErrorMessage = "Name is required")]
+        [StringLength(50, ErrorMessage = "Name is too long")]
+        public string Name { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Invalid email address")]
+        public string Email { get; set; } = string.Empty;
+
+        public string Subject { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Message is required")]
+        [MinLength(10, ErrorMessage = "Message must be at least 10 characters")]
+        [MaxLength(500, ErrorMessage = "Message is too long")]
+        public string Message { get; set; } = string.Empty;
+    }
+}
